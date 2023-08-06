@@ -26,10 +26,13 @@ jobs:
           id: get_version
           run: |
             echo ::set-output name=VERSION::$(grep "version:" pubspec.yaml | awk -F "+" '{print $1}' | sed 's/version: //g' | tr -d ' ')
-  
+          
+        - name: Rename apk
+          run: mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/Guzty_MBU_v${{ steps.get_version.outputs.VERSION }}.apk
+
         - name: Push to Releases
           uses: ncipollo/release-action@v1
           with:
-            artifacts: "build/app/outputs/flutter-apk/app-release.apk"
-            tag: Guzty_MBU_${{ steps.get_version.outputs.VERSION }}
+            artifacts: "build/app/outputs/flutter-apk/Guzty_MBU_v${{ steps.get_version.outputs.VERSION }}.apk"
+            tag: v${{ steps.get_version.outputs.VERSION }}
             token: ${{ secrets.TOKEN }}
