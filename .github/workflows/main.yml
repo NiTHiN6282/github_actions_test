@@ -25,11 +25,11 @@ jobs:
         - name: Get version
           id: get_version
           run: |
-            echo ::set-output name=VERSION::$(grep "version:" pubspec.yaml | awk -F "+" '{print $1}' | sed 's/version: //g')
+            echo ::set-output name=VERSION::$(grep "version:" pubspec.yaml | awk -F "+" '{print $1}' | sed 's/version: //g' | tr -d ' ')
   
         - name: Push to Releases
           uses: ncipollo/release-action@v1
           with:
             artifacts: "build/app/outputs/flutter-apk/app-release.apk"
-            tag: Guzty MBU ${{ steps.get_version.outputs.VERSION }}
+            tag: Guzty_MBU_${{ steps.get_version.outputs.VERSION }}
             token: ${{ secrets.TOKEN }}
